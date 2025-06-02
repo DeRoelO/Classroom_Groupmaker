@@ -14,9 +14,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       
+      - name: Prepare files
+        run: |
+          mkdir -p deploy
+          cp -r public/* deploy/
+          cp -r src deploy/
+      
       - name: Deploy to GitHub Pages
         id: deployment
         uses: JamesIves/github-pages-deploy-action@v4
         with:
-          folder: public
+          folder: deploy
           branch: gh-pages
