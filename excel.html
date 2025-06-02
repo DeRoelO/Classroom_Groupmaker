@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Excel Invoer - Klassenindeling Generator</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="/Classroom_Groupmaker/src/css/styles.css">
+    <script src="https://cdn.sheetjs.com/xlsx-0.20.1/package/dist/xlsx.full.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <a href="index.html" class="back-button">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M19 12H5M12 19l-7-7 7-7"/>
+            </svg>
+            Terug naar startpagina
+        </a>
+
+        <h1>Excel Invoer</h1>
+        
+        <div class="config">
+            <h2>Configuratie voor een Optimale Klassenindeling</h2>
+            
+            <div class="input-group">
+                <label for="groupSize">Groepsgrootte:</label>
+                <input type="number" id="groupSize" value="4" min="2" max="10">
+            </div>
+            
+            <div class="collapsible">
+                <div class="collapsible-header collapsed" onclick="toggleCollapsible(this)">
+                    <h3>Geavanceerde Instellingen</h3>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M9 18l6-6-6-6"/>
+                    </svg>
+                </div>
+                <div class="collapsible-content">
+                    <h4>Gewichten voor de Berekeningsmethode</h4>
+                    <div class="input-group">
+                        <label for="restrictionWeight">Gewicht voor restricties (negatief):</label>
+                        <input type="number" id="restrictionWeight" value="-100" min="-1000" max="0">
+                    </div>
+                    <div class="input-group">
+                        <label for="preference1Weight">Gewicht voor voorkeur 1 (positief):</label>
+                        <input type="number" id="preference1Weight" value="50" min="0" max="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="preference2Weight">Gewicht voor voorkeur 2 (positief):</label>
+                        <input type="number" id="preference2Weight" value="30" min="0" max="1000">
+                    </div>
+                    <div class="input-group">
+                        <label for="preference3Weight">Gewicht voor voorkeur 3 (positief):</label>
+                        <input type="number" id="preference3Weight" value="10" min="0" max="1000">
+                    </div>
+                    
+                    <h4>Algoritme Instellingen</h4>
+                    <div class="input-group">
+                        <label for="iterations">Aantal iteraties:</label>
+                        <input type="number" id="iterations" value="1000" min="100" max="10000">
+                    </div>
+                    <div class="input-group">
+                        <label for="localSearchAttempts">Lokale zoekpogingen per start:</label>
+                        <input type="number" id="localSearchAttempts" value="50" min="10" max="500">
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="upload-section">
+            <h2>Excel Bestand</h2>
+            <p>Upload een Excel bestand met de volgende kolommen:</p>
+            <ul>
+                <li>Naam</li>
+                <li>Voorkeur 1</li>
+                <li>Voorkeur 2</li>
+                <li>Voorkeur 3</li>
+                <li>Restrictie 1</li>
+                <li>Restrictie 2</li>
+                <li>Restrictie 3</li>
+            </ul>
+            
+            <div class="excel-actions">
+                <input type="file" id="excelFile" accept=".xlsx,.xls" onchange="loadExcelFile(event)" style="display: none;">
+                <button onclick="document.getElementById('excelFile').click()" class="load-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="17 8 12 3 7 8"/>
+                        <line x1="12" y1="3" x2="12" y2="15"/>
+                    </svg>
+                    Excel Bestand Uploaden
+                </button>
+                <button onclick="generateExcelTemplate()" class="load-button">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                        <polyline points="7 10 12 15 17 10"/>
+                        <line x1="12" y1="15" x2="12" y2="3"/>
+                    </svg>
+                    Template Downloaden
+                </button>
+            </div>
+            <div id="fileStatus" class="file-status"></div>
+        </div>
+
+        <div class="actions">
+            <button onclick="calculateGroups()" class="calculate-button">Bereken Indeling</button>
+        </div>
+
+        <div id="loadingMessage" style="display: none;">
+            Bezig met berekenen van de optimale indeling...
+        </div>
+
+        <div id="results"></div>
+    </div>
+
+    <script src="/Classroom_Groupmaker/src/js/algorithm.js"></script>
+    <script src="/Classroom_Groupmaker/src/js/ui.js"></script>
+    <script>
+        function toggleCollapsible(header) {
+            header.classList.toggle('collapsed');
+            const content = header.nextElementSibling;
+            content.classList.toggle('expanded');
+        }
+    </script>
+</body>
+</html> 
